@@ -18,16 +18,16 @@ class Directive(object):
 class TextDirective(Directive):
     def nextaddress(self):
         if self.args:
-            return int(args[0])
+            return int(self.args[0], 16)
         else:
             return 0
 
 class DataDirective(Directive):
     def nextaddress(self):
         if self.args:
-            return int(args[0])
+            return int(self.args[0], 16)
         else:
-            return int(200, 16)
+            return 0x200
 
 class AlignDirective(Directive):
     def nextaddress(self):
@@ -96,4 +96,3 @@ DIRECTIVES = {
         ".word": WordDirective, 
         ".space": SpaceDirective
     }
-    

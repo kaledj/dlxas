@@ -26,8 +26,11 @@ def findsymbols(inputdata):
         # else if directive, modify address as needed
         # else opcode-> increment by 4 and proceed
 
-    print directivehandler('.asciiz "hello"', 0)
-    print directivehandler('.asciiz "greetings", "earthling"', 0)    
+    print directivehandler('.align', 16)
+    print directivehandler('.align 1', 7)
+    print directivehandler('.align 2', 9) 
+    print directivehandler('.align 3', 15) 
+    print directivehandler('.align 4', 1)     
     return symtab
 
 def directivehandler(directiveline, address):
@@ -37,5 +40,6 @@ def directivehandler(directiveline, address):
     instruction. 
     '''
     linesplit = directiveline.split()
-    directive = DIRECTIVES[linesplit[0]](address, linesplit[1:])
-    return directive.nextaddress()
+    directiveclass = DIRECTIVES[linesplit[0]]
+    directiveobj = directiveclass(address, linesplit[1:])
+    return directiveobj.nextaddress()
