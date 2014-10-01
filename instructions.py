@@ -31,9 +31,12 @@ def loadopcodes():
                 R_OPCODES[split[0]] = (int(split[1]), int(split[2]))
     except IOError, exc:
         sys.exit(str(exc))
+loadopcodes()
 
 class Instruction(object):
     ''' Base class for all Instruction subtypes. '''
+    
+    
     def __init__(self, opcode):
         self.opcode = opcode
 

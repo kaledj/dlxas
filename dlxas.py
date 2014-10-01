@@ -16,7 +16,7 @@ def main():
     ''' Main function. Checks arguments and runs. '''
     args = sys.argv
     if args[1]:
-        filename, extension = os.path.splitext(args[1])
+        filepath, extension = os.path.splitext(args[1])
         if extension != ".dlx":
             sys.exit("Please supply a valid .dlx file")
     else: 
@@ -26,7 +26,7 @@ def main():
         with open(args[1], 'r') as infile:
             inputdata = infile.read()
         outputdata = dlxparser.parse(inputdata)
-        with open(filename + "TEST.hex", 'w') as outfile:
+        with open(filepath + "TEST.hex", 'w') as outfile:
             outfile.write(outputdata)
     except IOError, exc:
         sys.exit(str(exc))

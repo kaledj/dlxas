@@ -9,6 +9,8 @@ Implements functionality of assembler directives
 
 import struct, binascii
 
+DIRECTIVES = {}
+
 class Directive(object):
     ''' Base class for all Directive subtypes. '''
     def __init__(self, curraddr, args):
@@ -31,7 +33,7 @@ class DataDirective(Directive):
 
 class AlignDirective(Directive):
     def nextaddress(self):
-        multof = int(self.args[0]**2)
+        multof = pow(2, int(self.args[0]))
         if self.curraddr % multof == 0:
             return self.curraddr
         else:
@@ -46,7 +48,8 @@ class AsciizDirective(Directive):
 
     def encode(self):
         encoding = []
-        for asciiword in self.args:    
+        for asciiword in self.args:
+            asciiword = asciiword.strip('",')    
             encoding.append((asciiword + '\0').encode('hex'))
         return encoding
 
@@ -57,8 +60,8 @@ class DoubleDirective(Directive):
     def encode(self):
         encoding = []
         for doubleval in self.args:    
-            encoding.append(binascii.hexlify(struct.pack('>d'), 
-                float(doubleval.strip(','))))
+            encoding.append(binascii.hexlify(struct.pack('>d', 
+                float(doubleval.strip(',')))))
         return encoding
 
 class FloatDirective(Directive):
@@ -68,8 +71,8 @@ class FloatDirective(Directive):
     def encode(self):
         encoding = []
         for floatval in self.args:    
-            encoding.append(binascii.hexlify(struct.pack('>f'), 
-                float(floatval.strip(','))))
+            encoding.append(binascii.hexlify(struct.pack('>f', 
+                float(floatval.strip(',')))))
         return encoding
 
 class WordDirective(Directive):
@@ -79,20 +82,26 @@ class WordDirective(Directive):
     def encode(self):
         encoding = []
         for intval in self.args:    
-            encoding.append("%08x" %(intval.strip(',')))
+            if '0x' in intval:
+                asstring = binascii.hexlify(struct.pack('>i', 
+                    int(intval.strip(','), 16)))
+            else:
+                asstring = binascii.hexlify(struct.pack('>i', 
+                    int(intval.strip(','))))
+            encoding.append(asstring)
         return encoding
 
 class SpaceDirective(Directive):
     def nextaddress(self):
         return self.curraddr + self.args[0]
 
-DIRECTIVES = {
-        ".text": TextDirective, 
-        ".data": DataDirective, 
-        ".align": AlignDirective, 
-        ".asciiz": AsciizDirective, 
-        ".double": DoubleDirective, 
-        ".float": FloatDirective, 
-        ".word": WordDirective, 
-        ".space": SpaceDirective
-    }
+def mapdirectives():
+    DIRECTIVES[".text"] = TextDirective, 
+    DIRECTIVES[".data"] = DataDirective, 
+    DIRECTIVES[".align"] = AlignDirective, 
+    DIRECTIVES[".asciiz"] = AsciizDirective, 
+    DIRECTIVES[".double"] = DoubleDirective, 
+    DIRECTIVES[".float"] = FloatDirective, 
+    DIRECTIVES[".word"] = WordDirective, 
+    DIRECTIVES[".space"] = SpaceDirective
+mapdirectives()
