@@ -9,8 +9,8 @@ Usage: python dlxas.py filename
 '''
 
 import sys, os
-from instructions import *
-import instructions
+# User modules
+import dlxparser
 
 def main():
     ''' Main function. Checks arguments and runs. '''
@@ -22,13 +22,14 @@ def main():
     else: 
         sys.exit("Please provide an input file.")
 
-    try:
+    try: 
         with open(args[1], 'r') as infile:
             inputdata = infile.read()
-    except IOError, e:
-        sys.exit(str(e))
+        outputdata = dlxparser.parse(inputdata)
+        with open(filename + "TEST.hex", 'w') as outfile:
+            outfile.write(outputdata)
+    except IOError, exc:
+        sys.exit(str(exc))
 
-    instructions.loadopcodes()
-   
 if __name__ == '__main__':
     main()

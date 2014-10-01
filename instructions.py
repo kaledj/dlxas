@@ -1,7 +1,11 @@
 '''
 Instructions.py
 ===============
-Implements instruction types for the DLX assemlber. 
+
+This module:
+Contains functions to load opcodes from files. 
+Maps directives to their respective class.
+Implements instruction and directive classes for the DLX assembler. 
 '''
 
 import sys
@@ -29,11 +33,7 @@ def loadopcodes():
         sys.exit(str(exc))
 
 class Instruction(object):
-    '''
-    Instruction
-
-    Base class for all instruction types. 
-    '''
+    ''' Base class for all Instruction subtypes. '''
     def __init__(self, opcode):
         self.opcode = opcode
 
@@ -58,7 +58,7 @@ class IType(Instruction):
         instruction = (instruction << 5) + self.rs1
         instruction = (instruction << 5) + self.rdest
         instruction = (instruction << 16) + self.immediate
-        return hex(instruction)
+        return "%08x" %(instruction)
 
 class JType(Instruction):
     def __init__(self, opcode, name):
@@ -68,7 +68,7 @@ class JType(Instruction):
     def encode(self):
         instruction = self.opcode
         instruction = (instruction << 26) + self.name
-        return hex(instruction)
+        return hex(instruction)[2:]
 
 class RType(Instruction):
     def __init__(self, opcode, rs1, rs2, rdest, func):
@@ -87,7 +87,7 @@ class RALU(RType):
         instruction = (instruction << 5) + self.rdest
         instruction = (instruction << 5)
         instruction = (instruction << 6) + self.func
-        return hex(instruction)
+        return "%08x" %(instruction)
     
 class RFPU(RType):
     def encode(self):
@@ -98,7 +98,5 @@ class RFPU(RType):
         instruction = (instruction << 5) + self.rdest
         instruction = (instruction << 6)
         instruction = (instruction << 5) + self.func
-        return hex(instruction)
+        return "%08x" %(instruction)
  
-class Directive(Instruction):
-    pass
