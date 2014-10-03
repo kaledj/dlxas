@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 '''
 dlxas.py
 ========
@@ -9,7 +7,6 @@ Usage: python dlxas.py filename
 '''
 
 import sys, os
-# User modules
 import dlxparser
 
 def main():
@@ -26,7 +23,6 @@ def main():
         with open(args[1], 'r') as infile:
             inputdata = infile.read()
         outputdata = dlxparser.run(inputdata)
-        # print outputdata
         with open(filepath + ".hex", 'w') as outfile:
             outfile.write(outputdata)
     except IOError, exc:
