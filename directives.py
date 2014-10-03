@@ -9,13 +9,17 @@ Implements functionality of assembler directives
 
 import struct, binascii
 
-DIRECTIVES = {}
+
+
 
 class Directive(object):
     ''' Base class for all Directive subtypes. '''
     def __init__(self, curraddr, args):
         self.curraddr = curraddr
         self.args = args
+
+    def getlength(self):
+        return self.length
 
 class TextDirective(Directive):
     def nextaddress(self):
@@ -93,15 +97,17 @@ class WordDirective(Directive):
 
 class SpaceDirective(Directive):
     def nextaddress(self):
-        return self.curraddr + self.args[0]
+        return self.curraddr + int(self.args[0])
 
+DIRECTIVES = {} 
 def mapdirectives():
-    DIRECTIVES[".text"] = TextDirective, 
-    DIRECTIVES[".data"] = DataDirective, 
-    DIRECTIVES[".align"] = AlignDirective, 
-    DIRECTIVES[".asciiz"] = AsciizDirective, 
-    DIRECTIVES[".double"] = DoubleDirective, 
-    DIRECTIVES[".float"] = FloatDirective, 
-    DIRECTIVES[".word"] = WordDirective, 
+    ''' Performs the mapping to initialize DIRECTIVES. '''
+    DIRECTIVES[".text"] = TextDirective 
+    DIRECTIVES[".data"] = DataDirective 
+    DIRECTIVES[".align"] = AlignDirective 
+    DIRECTIVES[".asciiz"] = AsciizDirective 
+    DIRECTIVES[".double"] = DoubleDirective 
+    DIRECTIVES[".float"] = FloatDirective
+    DIRECTIVES[".word"] = WordDirective
     DIRECTIVES[".space"] = SpaceDirective
 mapdirectives()

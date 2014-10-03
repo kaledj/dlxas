@@ -25,8 +25,9 @@ def main():
     try: 
         with open(args[1], 'r') as infile:
             inputdata = infile.read()
-        outputdata = dlxparser.parse(inputdata)
-        with open(filepath + "TEST.hex", 'w') as outfile:
+        outputdata = dlxparser.run(inputdata)
+        # print outputdata
+        with open(filepath + ".hex", 'w') as outfile:
             outfile.write(outputdata)
     except IOError, exc:
         sys.exit(str(exc))
