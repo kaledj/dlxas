@@ -1,16 +1,18 @@
-'''
-dlxas.py
+"""
+DLX Assembler
 ========
-The DLX assembler. 
 
-Usage: python dlxas.py filename
-'''
+This module handles user input and file IO. 
+User input is validated first. Then, input file is opened and read, its contents
+being passed to dlxparser for further processing.
+
+"""
 
 import sys, os
 import dlxparser
 
 def main():
-    ''' Main function. Checks arguments and runs. '''
+    """ Main function. Checks arguments and begins execution. """
     args = sys.argv
     if args[1]:
         filepath, extension = os.path.splitext(args[1])
@@ -20,13 +22,13 @@ def main():
         sys.exit("Please provide an input file.")
 
     try: 
-        with open(args[1], 'r') as infile:
+        with open(args[1], "r") as infile:
             inputdata = infile.read()
         outputdata = dlxparser.run(inputdata)
-        with open(filepath + ".hex", 'w') as outfile:
+        with open(filepath + ".hex", "w") as outfile:
             outfile.write(outputdata)
     except IOError, exc:
         sys.exit(str(exc))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

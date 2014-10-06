@@ -4,9 +4,28 @@
 *  / /_/ / /___/   |   / ___ |(__  |__  )  __/ / / / / / /_/ / /  __/ /     *
 * /_____/_____/_/|_|  /_/  |_/____/____/\___/_/ /_/ /_/_.___/_/\___/_/      *
 =============================================================================                                                                         
-Usage:
 
+About: 
+    Author: David Kale
+    Date: Oct 2, 2014
+
+Usage:
     python dlxas.py inputFile.dlx
 
-    Note: This should run the 2.X version of Python at /usr/bin/python as
-        according to the #!. 
+    alternatively:
+    
+    python2 dlxas.py inputFile.dlx
+
+    This will assemble the input given by inputFile. dlxas outputs a file
+    at inputFile.hex 
+
+    Note: This should be run using the 2.X version of Python at /usr/bin/python 
+        or /usr/bin/python2. 3.X compatibility is not guaranteed. 
+
+Tests:
+    run.pl
+
+    All tests should pass using the script in this directory. If any errors
+    occur they are almost certainly related to python3 being ran rather than
+    python2. 
+
